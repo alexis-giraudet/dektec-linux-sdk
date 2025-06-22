@@ -1,0 +1,26 @@
+#!/usr/bin/make -f
+
+# PACKAGE_VERSION = $(shell head -1 Version)
+# include Drivers/Dta/Source/Version.inc
+# include Drivers/DtaNw/Source/Version.inc
+# include Drivers/Dtu/Source/Version.inc
+# include Drivers/DtPcie/Source/Version.inc
+# include Drivers/DtPcieNw/Source/Version.inc
+# export PACKAGE_VERSION DTA_VERSION DTANW_VERSION DTPCIE_VERSION DTPCIENW_VERSION DTU_VERSION
+
+%:
+	dh $@
+
+execute_before_dh_install:
+	./Drivers/Install_Dta
+	mv debian/tmp/usr/src/dektec_dta-*/dkms.conf debian/dta-driver-dkms.dkms
+	./Drivers/Install_DtPcie
+	mv debian/tmp/usr/src/dektec_dtpcie-*/dkms.conf debian/dtpcie-driver-dkms.dkms
+	./Drivers/Install_Dtu
+	mv debian/tmp/usr/src/dektec_dtu-*/dkms.conf debian/dtu-driver-dkms.dkms
+
+override_dh_installudev:
+	cp Drivers/Dta/Source/Linux/51-dta.rules debian/dta-driver-dkms.udev
+	cp Drivers/Dtu/Source/Linux/51-dtu.rules debian/dtu-driver-dkms.udev
+	cp Drivers/DtPcie/Source/Linux/51-dtpcie.rules debian/dtpcie-driver-dkms.udev
+	dh_installudev --priority=51

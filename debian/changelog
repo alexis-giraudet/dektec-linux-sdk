@@ -1,0 +1,33 @@
+dektec-linux-sdk (2025.04.0-1) UNRELEASED; urgency=medium
+  
+  [ Versions ]
+  * DTAPI: v6.9.0.237
+  * Dta: v4.28.12.290
+  * DtPcie: v3.5.2.391
+  * Dtu: v4.15.5.93
+  * DtBb2: v1.0.1.11
+  * DtaNw: v3.5.15.46
+  * DtPcieNw: v1.1.1.59
+  * DtapiService: v5.2.4.132
+  
+  [ New features ]
+  * DTA-2110/25: Support for ST 2110-40: ST291-1 Ancillary Data
+  * DTA-2110/25: Support for ST 2110-41: Fast Metadata
+  * DTA-2115B/2116: Support for new MIMO_SFN modulation license
+  * DTU-245B: Huffman compression is now used by default for SDI output; needed for new .sdi format
+  
+  [ Bug fixes ]
+  * [DTAPINET] Added missing SetSpectrumInversion() method and DtStatistic.m_StatisticId
+  * DtInpChannel::Read removed that NumBytesToRead must be a multiple of 4 for GSE, L3 and IP
+  * DTA-2110/25: Improvement on driver initialization robustness
+  * DTA-2110/25: default FIFO size is now sufficient for audio Rx and Tx
+  * DTA-2172/74B/75/78: For some specific SDI signal level the SD format was not detected
+  
+  [ Linux only changes ]
+  * Removed absolute paths in DTAPI.h references
+
+  [ IMPORTANT NOTE ]
+  * Make sure to upgrade VS2022 to v17.13.5 to prevent potential incompatibility issues
+  * DTAPI is now using C++17 (DTAPI_AvFifo.h)
+  
+ -- Alexis Giraudet <alexis.giraudet@nav-timing.safrangroup.com>  Tue, 01 Apr 2025 00:00:00 +0000

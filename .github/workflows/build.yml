@@ -1,0 +1,27 @@
+name: Build Debian Package
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build package
+        run: |
+          wget "https://www.dektec.com/products/SDK/DTAPI/Downloads/LinuxSDK_${GITHUB_REF_NAME}.tar.gz" -O "dektec-linux-sdk-${GITHUB_REF_NAME/v/}.tar.gz"
+          ln -s "dektec-linux-sdk-${GITHUB_REF_NAME/v/}.tar.gz" "dektec-linux-sdk_${GITHUB_REF_NAME/v/}.orig.tar.gz"
+          tar -xf "dektec-linux-sdk-${GITHUB_REF_NAME/v/}.tar.gz"
+          mv debian/ LinuxSDK/
+          sudo apt -y update
+          sudo apt -y install devscripts equivs
+          sudo mk-build-deps --install LinuxSDK/debian/control --tool "apt -y" --remove
+          cd LinuxSDK/
+          debuild
+          mkdir "${{ runner.temp }}/artifact/"
+          cp ../*.deb "${{ runner.temp }}/artifact/"
+      - uses: actions/upload-artifact@v4
+        with:
+          path: ${{ runner.temp }}/artifact/

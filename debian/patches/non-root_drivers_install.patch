@@ -1,0 +1,69 @@
+Description: Allows drivers to be installed in the debian/tmp folder without privileges.
+Author: Alexis Giraudet <alexis.giraudet@nav-timing.safrangroup.com>
+
+--- dektec-linux-sdk-2025.04.0.orig/Drivers/Install
++++ dektec-linux-sdk-2025.04.0/Drivers/Install
+@@ -48,14 +48,14 @@ while [[ $# -gt 0 ]]; do
+ done
+ 
+ # Must be root to install drivers.
+-[[ $(id -u) -eq 0 ]] || error "must be root to $CMD drivers, use sudo"
++# [[ $(id -u) -eq 0 ]] || error "must be root to $CMD drivers, use sudo"
+ 
+ # The LinuxSDK version is in LinuxSDK/Version file.
+ DRIVERSDIR=$(cd $(dirname "$0"); pwd)
+ SDKROOT=$(cd "$DRIVERSDIR/.."; pwd)
+ KERNEL=$(uname -r)
+ SDKVERSION=$(head -1 "$SDKROOT/Version" 2>/dev/null)
+-DKMSINSTALL="/usr/src/$PACKAGE_NAME-$SDKVERSION"
++DKMSINSTALL="debian/tmp/usr/src/$PACKAGE_NAME-$SDKVERSION"
+ UDEVDIR=/etc/udev/rules.d
+ [[ -z "$SDKVERSION" ]] && error "file $SDKROOT/Version not found or corrupted"
+ 
+@@ -63,14 +63,14 @@ UDEVDIR=/etc/udev/rules.d
+ case $CMD in
+     install)
+         # Requirements to install drivers.
+-        [[ -z $(which dkms 2>/dev/null) ]] && error "package 'dkms' is not installed"
+-        [[ -d "/lib/modules/$KERNEL/build/kernel" ]] || error "kernel headers are not installed"
++        # [[ -z $(which dkms 2>/dev/null) ]] && error "package 'dkms' is not installed"
++        # [[ -d "/lib/modules/$KERNEL/build/kernel" ]] || error "kernel headers are not installed"
+ 
+         # Install files in DKMS tree.
+         rm -rf "$DKMSINSTALL"
+-        install -d -m 755 -o root -g root "$DKMSINSTALL"
++        mkdir -p "$DKMSINSTALL"
+         cp -r "$SDKROOT/Common" "$SDKROOT/License" "$DKMSINSTALL"
+-        install -d -m 755 -o root -g root "$DKMSINSTALL/Drivers"
++        mkdir -p "$DKMSINSTALL/Drivers"
+         for drv in ${DRIVERNAMES[*]}; do
+             cp -r "$SDKROOT/Drivers/$drv" "$DKMSINSTALL/Drivers"
+         done
+@@ -91,10 +91,10 @@ EOF
+         # Generate DKMS configuration file.
+         CONF="$DKMSINSTALL/dkms.conf"
+         cat >"$CONF" <<EOF
+-PACKAGE_NAME=$PACKAGE_NAME
+-PACKAGE_VERSION=$SDKVERSION
++PACKAGE_NAME="$PACKAGE_NAME"
++PACKAGE_VERSION="$SDKVERSION"
+ 
+-MAKE="'make' KERNELDIR=/lib/modules/\${kernelver}/build"
++MAKE="'make' KERNELDIR=/lib/modules/\$kernelver/build"
+ CLEAN="make clean"
+ AUTOINSTALL=yes
+ EOF
+@@ -109,10 +109,12 @@ EOF
+ 
+         # Cleanup installed files and protections.
+         make -C "$DKMSINSTALL" --no-print-directory --silent clean
+-        chown -R root:root "$DKMSINSTALL"
++        # chown -R root:root "$DKMSINSTALL"
+         find "$DKMSINSTALL" -type f -print0 | xargs -0 chmod 644
+         find "$DKMSINSTALL" -type d -print0 | xargs -0 chmod 755
+ 
++        exit
++
+         # Install udev rules.
+         for f in "${UDEVRULES[@]}"; do
+             install -m 644 -o root -g root "$DRIVERSDIR/$f" $UDEVDIR
