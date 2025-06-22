@@ -11,9 +11,12 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build package
         run: |
-          wget "https://www.dektec.com/products/SDK/DTAPI/Downloads/LinuxSDK_${GITHUB_REF_NAME}.tar.gz" -O "dektec-linux-sdk-${GITHUB_REF_NAME/v/}.tar.gz"
-          ln -s "dektec-linux-sdk-${GITHUB_REF_NAME/v/}.tar.gz" "dektec-linux-sdk_${GITHUB_REF_NAME/v/}.orig.tar.gz"
-          tar -xf "dektec-linux-sdk-${GITHUB_REF_NAME/v/}.tar.gz"
+          readonly version="${GITHUB_REF_NAME%-*}"
+          readonly tarball=dektec-linux-sdk-${version/v/}.tar.gz
+          readonly tarball_orig=dektec-linux-sdk_${version/v/}.orig.tar.gz
+          wget "https://www.dektec.com/products/SDK/DTAPI/Downloads/LinuxSDK_${version}.tar.gz" -O "${tarball}"
+          ln -s "${tarball}" "${tarball_orig}"
+          tar -xf "${tarball}"
           mv debian/ LinuxSDK/
           sudo apt -y update
           sudo apt -y install devscripts equivs
