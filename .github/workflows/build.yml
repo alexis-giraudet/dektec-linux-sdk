@@ -6,25 +6,32 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
-      - name: Build package
+      - name: Install dependencies
         run: |
-          readonly version="${GITHUB_REF_NAME%-*}"
-          readonly tarball=dektec-linux-sdk-${version/v/}.tar.gz
-          readonly tarball_orig=dektec-linux-sdk_${version/v/}.orig.tar.gz
-          wget "https://www.dektec.com/products/SDK/DTAPI/Downloads/LinuxSDK_${version}.tar.gz" -O "${tarball}"
-          ln -s "${tarball}" "${tarball_orig}"
-          tar -xf "${tarball}"
-          mv debian/ LinuxSDK/
           sudo apt -y update
           sudo apt -y install devscripts equivs
-          sudo mk-build-deps --install LinuxSDK/debian/control --tool "apt -y" --remove
-          cd LinuxSDK/
-          debuild
+          sudo mk-build-deps --install debian/control --tool "apt -y" --remove
+      - name: Build package
+        run: |
+          readonly upstream_prefix=LinuxSDK_v
+          readonly upstream=$(basename "$upstream_prefix"*)
+          version=${upstream/$upstream_prefix/}
+          readonly version=${version/.tar*/}
+          readonly upstream_ext=.tar${upstream#*.tar}
+          ln -s "${upstream}" "dektec-linux-sdk-${version}${upstream_ext}"
+          ln -s "${upstream}" "dektec-linux-sdk_${version}.orig${upstream_ext}"
+          tar -xf "$upstream"
+          mv debian/ LinuxSDK/
+          (cd LinuxSDK/ && debuild)
           mkdir "${{ runner.temp }}/artifact/"
-          cp ../*.deb "${{ runner.temp }}/artifact/"
+          for deb in *.deb; do mv --verbose "$deb" "${{ runner.temp }}/artifact/${deb%.deb}_${{ matrix.os }}.deb"; done
       - uses: actions/upload-artifact@v4
         with:
+          name: ${{ matrix.os }}
           path: ${{ runner.temp }}/artifact/
