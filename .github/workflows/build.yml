@@ -24,12 +24,12 @@ jobs:
           version=${upstream/$upstream_prefix/}
           readonly version=${version/.tar*/}
           readonly upstream_ext=.tar${upstream#*.tar}
-          ln -s "${upstream}" "dektec-linux-sdk-${version}${upstream_ext}"
-          ln -s "${upstream}" "dektec-linux-sdk_${version}.orig${upstream_ext}"
-          tar -xf "$upstream"
-          mv debian/ LinuxSDK/
+          ln --verbose --symbolic "${upstream}" "dektec-linux-sdk-${version}${upstream_ext}"
+          ln --verbose --symbolic "${upstream}" "dektec-linux-sdk_${version}.orig${upstream_ext}"
+          tar --verbose --extract --file="$upstream"
+          mv --verbose debian/ LinuxSDK/
           (cd LinuxSDK/ && debuild)
-          mkdir "${{ runner.temp }}/artifact/"
+          mkdir --verbose "${{ runner.temp }}/artifact/"
           for deb in *.deb; do mv --verbose "$deb" "${{ runner.temp }}/artifact/${deb%.deb}_${{ matrix.os }}.deb"; done
       - uses: actions/upload-artifact@v4
         with:
