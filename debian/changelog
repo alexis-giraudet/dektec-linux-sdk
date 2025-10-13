@@ -1,3 +1,45 @@
+dektec-linux-sdk (2025.09.0-1) UNRELEASED; urgency=medium
+  
+  [ Versions ]
+  * DTAPI: v6.10.0.239
+  * Dta: v4.28.13.291
+  * DtPcie: v3.6.0.393
+  * Dtu: v4.15.5.93
+  * DtBb2: v1.0.1.11
+  * DtaNw: v3.5.16.47
+  * DtPcieNw: v1.2.0.61
+  * DtapiService: v5.2.5.133
+  
+  [ New features ]
+  * DTA-2110: Support for ST 2110 Jumbo Frames (requires DTA-2110 firmware v1)
+
+  [ Bug fixes ]
+  * DTAPI DtOutpChannel reported DMA underflows when generating a 1080p50 SDI signal
+  * DTA-2115B/2116/DTU-315: Fix for ATSC3.0 ALP packets that are using concatenation
+  * DTA-2115B//2116: ATSC 3.0 MIMO improvement to make sure channels are always in sync
+  * DTA-2115B/2116: ATSC3.0 MIMO preamble and bootstrap power for polarization 2 according to latest spec; erratum correction A322
+  * DTA-2115B/2116: ATSC3.0 MIMO stream combining processing for QPSK 13/15 is now enabled
+  * DTA-2115B/2116: ATSC3.0 MIMO channel modeling improvements for channel 2
+  * DTA-2115B/2116: Improvements in channel modeling paths to better support SFN and MIMO tests
+  * DTA-2115B: [Improvement to ensure GPS-Synced output](https://www.dektec.com/products/PCIe/DTA-2115B/downloads/DT-AN-2115B-GPSSYNC.pdf)
+  * DTA-2110: Link was sometimes not established for a point-to-point connection to another DTA-2110
+  * DTA-2110/25: Improvement on receiving unsolicited unicast stream
+  * DTA-2110/25: IPv6 header payload length was incorrect
+  * DTA-2110/25: ST 2022 RTP timestamp could have been incorrect
+  * DTA-2110/25: ST 2022 possible corrupted frame data if payload length was not multiple of 5 bytes
+  * DTA-2131B: Improvement to support IQ-bandwidth of 7MHz
+  * DTA-2132: Occasional invalid STL3 frame was seen
+
+  [ Linux only changes ]
+  * Fix for Ubuntu 24.04 kernel array index out of bounds errors UBSAN
+  * DTA-2110/25: DtPcie driver could in rare cases crash on join/release multicast
+  * DTA-2110/25: DtPcieNw driver receive could in rare cases deadlock network stack
+
+  [ IMPORTANT NOTE ]
+  * We recommend to upgrade VS2022 to v17.14.15 to prevent potential incompatibility issues
+  
+ -- Alexis Giraudet <alexis.giraudet@nav-timing.safrangroup.com>  Mon, 13 Oct 2025 20:20:20 +0200
+
 dektec-linux-sdk (2025.04.0-1) UNRELEASED; urgency=medium
   
   [ Versions ]
