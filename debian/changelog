@@ -1,3 +1,35 @@
+dektec-linux-sdk (2025.12.0-1) UNRELEASED; urgency=medium
+  
+  [ Versions ]
+  * DTAPI: v6.11.0.240
+  * Dta: v4.28.13.291
+  * DtPcie: v3.6.2.396
+  * Dtu: v4.15.5.93
+  * DtBb2: v1.0.1.11
+  * DtaNw: v3.5.16.47
+  * DtPcieNw: v1.2.1.62
+  * DtapiService: v5.2.6.135
+  
+  [ New features ]
+  * DTA-2127/28: Improvement to support also manual symbolrate configuration
+
+  [ Bug fixes ]
+  * DtapiService improvement to support latest DirectShow filter that requires extra dll
+  * DTA-2110/25/62: Improvements on IPv6 support
+  * DTA-2110/25 AvFifo performance improvements for TimeConversion::Rtp2Tod and CopyFrame
+  * DTA-2110/25 AvFifo support for TxFrameFormat 10-bit packed UYVY in network byte order
+  * DTA-2110/25 AvFifo fix for potential out of bounds write for ConvertVideo/CopyVideoData functions
+  * DTA-2110: TSoIP output was not working for new firmware v1
+  * DTA-2127/28: Increased the DMA buffer size to prevent potential packet loss on lower-performance systems
+
+  [ Linux only changes ]
+  * Fix for Rocky Linux 9.6 driver builds failing
+
+  [ IMPORTANT NOTE ]
+  * We recommend to upgrade VS2022 to v17.14.21 to prevent potential incompatibility issues
+  
+ -- Alexis Giraudet <alexis.giraudet@nav-timing.safrangroup.com>  Fri, 09 Jan 2026 14:46:13 +0100
+
 dektec-linux-sdk (2025.09.0-1) UNRELEASED; urgency=medium
   
   [ Versions ]
