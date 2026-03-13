@@ -1,3 +1,31 @@
+dektec-linux-sdk (2026.02.0-1) UNRELEASED; urgency=medium
+  
+  [ Versions ]
+  * DTAPI: v6.12.0.241
+  * Dta: v4.28.13.291
+  * DtPcie: v3.6.3.397
+  * Dtu: v4.15.5.93
+  * DtBb2: v1.0.1.11
+  * DtaNw: v3.5.16.47
+  * DtPcieNw: v1.2.1.62
+  * DtapiService: v5.2.7.140
+  
+  [ New features ]
+  * Support for DTA-2127 firmware v1 and DTA-2178 firmware v4
+
+  [ Bug fixes ]
+  * DTA-2127/28: didn't pass DVB-S2(X) data after receiving a DVB-S2 GSE-HEM signal
+  * DTA-2127/28: demodulator transport-stream output was disabled while carrier lock was achieved
+
+  [ Linux only changes ]
+  * Fix for clean-up of the pipes when it stops
+  * Change pipes location since /tmp folder could be deleted by systemd-tmpfiles proces
+
+  [ IMPORTANT NOTE ]
+  * We recommend to upgrade VS2022 to v17.14.25 to prevent potential incompatibility issues
+  
+ -- Alexis Giraudet <alexis.giraudet@nav-timing.safrangroup.com>  Fri, 13 Mar 2026 17:31:59 +0100
+
 dektec-linux-sdk (2025.12.0-1) UNRELEASED; urgency=medium
   
   [ Versions ]
