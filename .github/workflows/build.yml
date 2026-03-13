@@ -11,7 +11,7 @@ jobs:
         os: [ubuntu-22.04, ubuntu-24.04]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Install dependencies
         run: |
           sudo apt -y update
@@ -31,7 +31,7 @@ jobs:
           (cd LinuxSDK/ && debuild)
           mkdir --verbose "${{ runner.temp }}/artifact/"
           for deb in *.deb; do mv --verbose "$deb" "${{ runner.temp }}/artifact/${deb%.deb}_${{ matrix.os }}.deb"; done
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: ${{ matrix.os }}
           path: ${{ runner.temp }}/artifact/
