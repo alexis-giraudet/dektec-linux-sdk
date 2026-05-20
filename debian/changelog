@@ -1,3 +1,32 @@
+dektec-linux-sdk (2026.05.0-1) UNRELEASED; urgency=medium
+  
+  [ Versions ]
+  * DTAPI: v6.13.0.242
+  * Dta: v4.28.14.293
+  * DtPcie: v3.6.4.398
+  * Dtu: v4.15.5.93
+  * DtBb2: v1.0.1.11
+  * DtaNw: v3.5.16.47
+  * DtPcieNw: v1.2.1.62
+  * DtapiService: v5.2.8.141
+  
+  [ New features ]
+  * Support for DTA-2125 firmware v1 and DTA-2172 firmware v3
+  * DTA-2116/DTU-315: Added option for manual seed option in DtCmPars for AWGN noise generator
+
+  [ Bug fixes ]
+  * Fix for DtapiModPars2TsRate() unresolved external
+  * DTA-2127/28: Fix for GSE-HEM reception not working on even channels
+  * DTA-2172/74B/75/78: Optimized TS-to-ASI for for low-delay, low-bitrate applications
+
+  [ Linux only changes ]
+  * DtapiService script now returns an error on install failure
+
+  [ IMPORTANT NOTE ]
+  * We recommend to upgrade VS2022 to v17.14.31 to prevent potential incompatibility issues
+  
+ -- Alexis Giraudet <alexis.giraudet@nav-timing.safrangroup.com>  Thu, 21 May 2026 00:09:54 +0200
+
 dektec-linux-sdk (2026.02.0-1) UNRELEASED; urgency=medium
   
   [ Versions ]
